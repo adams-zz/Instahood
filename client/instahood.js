@@ -4,11 +4,9 @@ var userLocation = "";
 Template.map.rendered = function(position) {
     var lat, lng, latLng;
     navigator.geolocation.getCurrentPosition(function(success){
-      lat = success.coords.latitude;
-      lng = success.coords.longitude;
-      latLng = new google.maps.LatLng(lat, lng);
-      console.log(latLng);
+      latLng = new google.maps.LatLng(success.coords.latitude, success.coords.longitude);
       var mapOptions = {
+        streetViewControl: false,
         navigationControlOptions: {style: google.maps.NavigationControlStyle.SMALL},
         scrollwheel: false,
         zoom: 13,
@@ -19,7 +17,6 @@ Template.map.rendered = function(position) {
 
       map = new google.maps.Map(document.getElementById("map_canvas"), mapOptions);
 
-      // var blueIcon = new GIcon(G_DEFAULT_ICON);
 
       var image = "http://gmaps-samples.googlecode.com/svn/trunk/markers/blue/blank.png";
       var blueIcon = new google.maps.Marker({
@@ -34,6 +31,25 @@ Template.map.rendered = function(position) {
         getNewPhotos(currentPos);
       });
 
+      var input = document.getElementById('searchTextField');
+      var options = {
+        types: ['(cities)']
+      };
+
+      autocomplete = new google.maps.places.Autocomplete(input, options);
+
+      // autocomplete.bindTo('bounds', map);
+      google.maps.event.addListener(autocomplete, 'place_changed', function() {
+        var place = autocomplete.getPlace();
+
+        var searchPos = {name: 'N/A', lat: place.geometry.location.lat(), lng: place.geometry.location.lng(), dist: '3000'};
+
+        getNewPhotos(searchPos);
+
+        // var newlatLng = new google.maps.LatLng(place.geometry.location.lat(),  place.geometry.location.lng());
+
+        map.setCenter(place.geometry.location);
+      });
     });    
 };
 
@@ -66,6 +82,12 @@ function onJsonLoaded (json){
   } else{
     alert(json.meta.error_message);
   };
+  if (Session.get('photoset').length === 0){
+        // $('#container').toggleClass('greyed');
+    console.log('NOTHING!')
+
+    $('#photos-container').css('background','black');
+  }
 }
 
 var getNewPhotos = function (place) {
@@ -108,7 +130,6 @@ Template.instagram.helpers({
 
 
 Template.main.events({
-
   'click .photo': function(event){
     $('#container').toggleClass('greyed');
     if (Session.equals('zoomed', '')) {

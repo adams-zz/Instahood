@@ -1,7 +1,8 @@
 <head>
     <title>Instahood</title>
     <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js"></script> 
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDSoM9HgrTGLXgnm9mjzDY0194TPVx0mtw&sensor=true"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDSoM9HgrTGLXgnm9mjzDY0194TPVx0mtw&sensor=true&amp;libraries=places"></script>
+
     <meta name="viewport", content="width=device-width, initial-scale=0.5, user-scalable=no">
 </head>
 
@@ -13,6 +14,7 @@
 <template name="main">
     <nav>
         <span>Instahood</span>
+        <input id="searchTextField" type="text" size="50">
     </nav>
     <div id="top-space"></div>
     <div id="container">
@@ -23,7 +25,7 @@
 </template>
 
 <template name="instagram">
-    <div class="photos-container">
+    <div id="photos-container">
         {{#each photoset}}
         <img class="photo" src="{{ images.low_resolution.url }}" alt="">
         {{/each}}

@@ -25,7 +25,7 @@ nav span {
     text-shadow: rgba(10,10,10,1) -1px 1px 3px;
 }
 
-.photos-container {
+#photos-container {
     position:absolute;
     left:50%;
     min-width: 50%;
@@ -45,6 +45,9 @@ nav span {
     transition: all 1s linear;
 }
 
+.photo:hover {
+    opacity: 0.5;
+}
 
 .photo.zoomed {
     opacity: 1.0;
@@ -59,11 +62,15 @@ nav span {
     left: 50%;
     right: 50%;
     top: 50%;
-    z-index:2;
+    z-index:1;
 }
 
 .greyed {
     opacity: 0.1;
+}
+
+.blued {
+  background:blue;
 }
 
 #map_canvas { 
@@ -74,6 +81,5 @@ nav span {
   top: 0;
   bottom: 0;
   overflow: hidden;
-  /*z-index:-1;*/
   margin-top:33px;
 }
