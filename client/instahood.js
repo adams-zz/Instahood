@@ -1,22 +1,40 @@
 var markersArray = [];
+var userLocation = "";
 
-Template.map.rendered = function() {
-    var mapOptions = {
-      scrollwheel: false,
-      zoom: 13,
-      center: new google.maps.LatLng(37.755401, -122.446806),
-      mapTypeId: google.maps.MapTypeId.ROADMAP
-    };
-    map = new google.maps.Map(document.getElementById("map_canvas"), mapOptions);
+Template.map.rendered = function(position) {
+    var lat, lng, latLng;
+    navigator.geolocation.getCurrentPosition(function(success){
+      lat = success.coords.latitude;
+      lng = success.coords.longitude;
+      latLng = new google.maps.LatLng(lat, lng);
+      console.log(latLng);
+      var mapOptions = {
+        navigationControlOptions: {style: google.maps.NavigationControlStyle.SMALL},
+        scrollwheel: false,
+        zoom: 13,
+        center: latLng,
+        // center: new google.maps.LatLng(37.755401, -122.446806),
+        mapTypeId: google.maps.MapTypeId.ROADMAP
+      };
 
-    google.maps.event.addListener(map, 'click', function(event){
+      map = new google.maps.Map(document.getElementById("map_canvas"), mapOptions);
 
-      placeMarker(event.latLng);
+      // var blueIcon = new GIcon(G_DEFAULT_ICON);
 
-      var currentPos = {name: 'N/A', lat: event.latLng.lat(), lng: event.latLng.lng(), dist: '1000'};
+      var image = "http://gmaps-samples.googlecode.com/svn/trunk/markers/blue/blank.png";
+      var blueIcon = new google.maps.Marker({
+          position: latLng,
+          map: map,
+          icon: image
+      });
 
-      getNewPhotos(currentPos);
-    });
+      google.maps.event.addListener(map, 'click', function(event){
+        placeMarker(event.latLng);
+        var currentPos = {name: 'N/A', lat: event.latLng.lat(), lng: event.latLng.lng(), dist: '1000'};
+        getNewPhotos(currentPos);
+      });
+
+    });    
 };
 
 function placeMarker(location){
@@ -37,6 +55,7 @@ function deleteOverlays() {
     }
 }
 
+//INSTAGRAM
 
 var CLIENTID = '115c041ed2674786a9b047417174c1bc';
 
@@ -65,7 +84,6 @@ var getNewPhotos = function (place) {
 
 Meteor.startup(function(){
   Session.set('photoset', '');
-  Session.set('selected', 'San Francisco');
   Session.set('zoomed', ''); 
   
   $.ajax({
@@ -89,10 +107,10 @@ Template.instagram.helpers({
 });
 
 
-Template.instagram.events({
+Template.main.events({
 
   'click .photo': function(event){
-    $('.photos-container').toggleClass('greyed');
+    $('#container').toggleClass('greyed');
     if (Session.equals('zoomed', '')) {
       $('<img src='+this.images.standard_resolution.url+' alt="">').appendTo('#zoomed-image');
       Session.set('zoomed', this.images.standard_resolution.url);

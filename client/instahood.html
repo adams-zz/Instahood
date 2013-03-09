@@ -7,8 +7,7 @@
 
 <body>
     {{> main}}
-    {{> instagram}}
-    {{> map}}
+
 </body>
 
 <template name="main">
@@ -16,6 +15,11 @@
         <span>Instahood</span>
     </nav>
     <div id="top-space"></div>
+    <div id="container">
+        {{> instagram}}
+        {{> map}}
+    </div>
+    <div id="zoomed-image"></div>
 </template>
 
 <template name="instagram">
@@ -25,8 +29,7 @@
         {{/each}}
 <!--        <div id="button-more">more</div>
  -->    </div>
-    <div id="zoomed-image">
-    </div>
+
 </template>
 
 <template name="map">
