@@ -1,0 +1,34 @@
+<head>
+    <title>Instahood</title>
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js"></script> 
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDSoM9HgrTGLXgnm9mjzDY0194TPVx0mtw&sensor=true"></script>
+    <meta name="viewport", content="width=device-width, initial-scale=0.5, user-scalable=no">
+</head>
+
+<body>
+    {{> main}}
+    {{> instagram}}
+    {{> map}}
+</body>
+
+<template name="main">
+    <nav>
+        <span>Instahood</span>
+    </nav>
+    <div id="top-space"></div>
+</template>
+
+<template name="instagram">
+    <div class="photos-container">
+        {{#each photoset}}
+        <img class="photo" src="{{ images.low_resolution.url }}" alt="">
+        {{/each}}
+<!--        <div id="button-more">more</div>
+ -->    </div>
+    <div id="zoomed-image">
+    </div>
+</template>
+
+<template name="map">
+  <div id="map_canvas"></div>
+</template>
