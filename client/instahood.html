@@ -1,7 +1,7 @@
 <head>
     <title>Instahood</title>
     <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js"></script> 
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDSoM9HgrTGLXgnm9mjzDY0194TPVx0mtw&sensor=true&amp;libraries=places"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDSoM9HgrTGLXgnm9mjzDY0194TPVx0mtw&sensor=true&libraries=places"></script>
 
     <meta name="viewport", content="width=device-width, initial-scale=0.5, user-scalable=no">
 </head>
@@ -14,8 +14,17 @@
 <template name="main">
     <nav>
         <span>Instahood</span>
-        <input id="searchTextField" type="text" size="50">
+        <input id="searchTextField" type="text" size="60">
+        {{#constant}}
+            <div id="social">
+                <a href="https://twitter.com/share" class="twitter-share-button" data-via="mgadams3" data-size="large" data-hashtags="instahood" data-text="Check out what's going on in any neighborhood or location via instagram with @instahood! www.instahood.meteor.com">Tweet</a>
+            </div>
+        {{/constant}}
+        <div id="login" style="float: right">
+            {{loginButtons align="right"}}
+        </div>
     </nav>
+
     <div id="top-space"></div>
     <div id="container">
         {{> instagram}}
@@ -28,10 +37,10 @@
     <div id="photos-container">
         {{#each photoset}}
         <img class="photo" src="{{ images.low_resolution.url }}" alt="">
+        {{^}}
+        <p class="no-photos">No Photos....<p>
         {{/each}}
-<!--        <div id="button-more">more</div>
- -->    </div>
-
+    </div>
 </template>
 
 <template name="map">

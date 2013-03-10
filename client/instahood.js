@@ -6,17 +6,18 @@ Template.map.rendered = function(position) {
     navigator.geolocation.getCurrentPosition(function(success){
       latLng = new google.maps.LatLng(success.coords.latitude, success.coords.longitude);
       var mapOptions = {
+        mapTypeControlOptions: { position: google.maps.ControlPosition.RIGHT_BOTTOM},
         streetViewControl: false,
-        navigationControlOptions: {style: google.maps.NavigationControlStyle.SMALL},
+        navigationControlOptions: {
+          position: google.maps.ControlPosition.LEFT_BOTTOM
+        },
         scrollwheel: false,
         zoom: 13,
         center: latLng,
-        // center: new google.maps.LatLng(37.755401, -122.446806),
         mapTypeId: google.maps.MapTypeId.ROADMAP
       };
 
       map = new google.maps.Map(document.getElementById("map_canvas"), mapOptions);
-
 
       var image = "http://gmaps-samples.googlecode.com/svn/trunk/markers/blue/blank.png";
       var blueIcon = new google.maps.Marker({
@@ -32,25 +33,15 @@ Template.map.rendered = function(position) {
       });
 
       var input = document.getElementById('searchTextField');
-      var options = {
-        types: ['(cities)']
-      };
-
-      autocomplete = new google.maps.places.Autocomplete(input, options);
-
-      // autocomplete.bindTo('bounds', map);
+      autocomplete = new google.maps.places.Autocomplete(input);
       google.maps.event.addListener(autocomplete, 'place_changed', function() {
         var place = autocomplete.getPlace();
-
         var searchPos = {name: 'N/A', lat: place.geometry.location.lat(), lng: place.geometry.location.lng(), dist: '3000'};
-
         getNewPhotos(searchPos);
-
-        // var newlatLng = new google.maps.LatLng(place.geometry.location.lat(),  place.geometry.location.lng());
-
+        placeMarker(place.geometry.location);
         map.setCenter(place.geometry.location);
       });
-    });    
+    });
 };
 
 function placeMarker(location){
@@ -82,12 +73,6 @@ function onJsonLoaded (json){
   } else{
     alert(json.meta.error_message);
   };
-  if (Session.get('photoset').length === 0){
-        // $('#container').toggleClass('greyed');
-    console.log('NOTHING!')
-
-    $('#photos-container').css('background','black');
-  }
 }
 
 var getNewPhotos = function (place) {
@@ -109,18 +94,26 @@ Meteor.startup(function(){
   Session.set('zoomed', ''); 
   
   $.ajax({
-  url: 'https://api.instagram.com/v1/media/search?callback=?',
-  dataType: 'json',
-  data: {lat: '37.7750', lng: '-122.4183', distance:'5000', client_id: CLIENTID}, 
-  success: onJsonLoaded,
-  statusCode: {
-    500: function () {
-      alert('Sorry, service is temporarily down.');
+    url: 'https://api.instagram.com/v1/media/search?callback=?',
+    dataType: 'json',
+    data: {lat: '37.7750', lng: '-122.4183', distance:'5000', client_id: CLIENTID}, 
+    success: onJsonLoaded,
+    statusCode: {
+      500: function () {
+        alert('Sorry, service is temporarily down.');
+      }
     }
-  }
   });
-});
 
+  !function(d,s,id){
+    var js,fjs=d.getElementsByTagName(s)[0];
+    if(!d.getElementById(id)){
+      js=d.createElement(s);js.id=id;
+      js.src="https://platform.twitter.com/widgets.js";
+      fjs.parentNode.insertBefore(js,fjs);
+    }
+  }(document,"script","twitter-wjs");
+});
 
 Template.instagram.helpers({
   photoset: function(){
@@ -128,16 +121,22 @@ Template.instagram.helpers({
   }
 });
 
-
 Template.main.events({
   'click .photo': function(event){
-    $('#container').toggleClass('greyed');
+    $('#container').addClass('greyed');
     if (Session.equals('zoomed', '')) {
+      $('<button class="close">close</button>').appendTo('#zoomed-image');
       $('<img src='+this.images.standard_resolution.url+' alt="">').appendTo('#zoomed-image');
       Session.set('zoomed', this.images.standard_resolution.url);
     } else{
+      $('#container').removeClass('greyed');
       $('#zoomed-image').children().remove();
       Session.set('zoomed', '');
     };
+  },
+  'click .close': function(){
+    $('#container').removeClass('greyed');
+    $('#zoomed-image').children().remove();
+    Session.set('zoomed', '');
   }
 });
