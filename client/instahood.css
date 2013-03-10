@@ -35,7 +35,6 @@ nav span, #login {
     transition: all 800ms linear;
     height: 100%;
     overflow:scroll;
-    /*margin-top:33px;*/
 }
 
 .photo {
@@ -43,7 +42,7 @@ nav span, #login {
     width:32.8%;
     min-width: 150px;
     max-width: 306px;
-    -webkit-transition: all 1s linear; /*400ms*/
+    -webkit-transition: all 1s linear;
     transition: all 1s linear;
 }
 
@@ -83,11 +82,10 @@ nav span, #login {
   top: 0;
   bottom: 0;
   overflow: hidden;
-  /*margin-top:33px;*/
 }
 
 #searchTextField {
-  margin: 8px 0 5px 50px;
+  margin: 5px 0 5px 50px;
 }
 .no-photos {
   margin: 50px 0px 0px 30px
