@@ -4,12 +4,14 @@ html, body {
     padding: 0; 
     font-size: 15px;
     font-family: "Arial";
+    background: url('/background.png');
+    /*color:white;*/
 }
 
 nav {
     height: 40px;
     font-size: 20px;
-    position: fixed;
+    /*position: fixed;*/
     top: 0;
     left: 0;
     width: 100%;
@@ -70,10 +72,6 @@ nav span, #login {
     opacity: 0.1;
 }
 
-.blued {
-  background:blue;
-}
-
 #map_canvas { 
   height: 100%;
   position: absolute;
@@ -82,12 +80,14 @@ nav span, #login {
   top: 0;
   bottom: 0;
   overflow: hidden;
+  margin-top:40px;
 }
 
 #searchTextField {
   margin: 5px 0 5px 50px;
 }
 .no-photos {
+  color:white;
   margin: 50px 0px 0px 30px
 }
 
@@ -105,4 +105,29 @@ nav span, #login {
 
 #login {
   margin:2px 20px 0 0;
+}
+
+.popupPhoto {
+  height:250px;
+  width:250px;
+}
+
+.popupText {
+  position:relative;
+  text-shadow: 0 -1px 0 #bbb;
+  color: #333;
+  font-family: Helvetica Neue, Helvetica, arial;
+  font-size: 14px;
+  line-height: 25px;
+  padding: 4px 45px 4px 15px;
+  font-weight: bold;
+}
+
+.profilePicture {
+  height:30px;
+  width:30px;
+}
+
+.userInfo {
+  padding-top:9px;
 }

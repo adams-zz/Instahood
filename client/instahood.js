@@ -10,7 +10,7 @@ Meteor.startup(function(){
   navigator.geolocation.getCurrentPosition(function(success){
     createMap(success);
     addClickListener(success);
-    placeBlueMarker(success);
+    placeNavMarker(success);
   });
   addAutocomplete();
 });
@@ -44,55 +44,102 @@ Template.main.events({
 //GOOGLE MAPS HELPERS
 
 function createMap(success) {
-      var latLng = new google.maps.LatLng(success.coords.latitude, success.coords.longitude);
-      var mapOptions = {
-        mapTypeControlOptions: { position: google.maps.ControlPosition.RIGHT_BOTTOM},
-        streetViewControl: false,
-        navigationControlOptions: {
-          position: google.maps.ControlPosition.LEFT_BOTTOM
-        },
-        scrollwheel: false,
-        zoom: 14,
-        center: latLng,
-        mapTypeId: google.maps.MapTypeId.ROADMAP
-      };
-      map = new google.maps.Map(document.getElementById("map_canvas"), mapOptions);
+  var latLng = new google.maps.LatLng(success.coords.latitude, success.coords.longitude);
+  var mapOptions = {
+    // mapTypeControlOptions: { position: google.maps.ControlPosition.RIGHT_BOTTOM},
+    streetViewControl: false,
+    // navigationControlOptions: {
+    //   position: google.maps.ControlPosition.LEFT_BOTTOM
+    // },
+    scrollwheel: false,
+    zoom: 14,
+    center: latLng,
+    mapTypeId: google.maps.MapTypeId.ROADMAP
+  };
+  map = new google.maps.Map(document.getElementById("map_canvas"), mapOptions);
 }
 
 function addClickListener(success) {
-      var latLng = new google.maps.LatLng(success.coords.latitude, success.coords.longitude);
-      google.maps.event.addListener(map, 'click', function(event){
-        var currentPos = {lat: event.latLng.lat(), lng: event.latLng.lng(), dist: '1000'};
+  var latLng = new google.maps.LatLng(success.coords.latitude, success.coords.longitude);
+  google.maps.event.addListener(map, 'click', function(event){
+    var currentPos = {lat: event.latLng.lat(), lng: event.latLng.lng(), dist: '1000'};
 
-        placeMarker(event.latLng);
-        getNewPhotos(currentPos);
-      });
+    placeClickMarker(event.latLng);
+    getNewPhotos(currentPos);
+  });
 }
 
 function addAutocomplete() {
-      var input = document.getElementById('searchTextField');
-      autocomplete = new google.maps.places.Autocomplete(input);
-      google.maps.event.addListener(autocomplete, 'place_changed', function() {
-        var place = autocomplete.getPlace();
-        var searchPos = {lat: place.geometry.location.lat(), lng: place.geometry.location.lng(), dist: '3000'};
-        getNewPhotos(searchPos);
-        placeMarker(place.geometry.location);
-        map.setCenter(place.geometry.location);
-        map.setZoom(15);
-      });
+  var input = document.getElementById('searchTextField');
+  autocomplete = new google.maps.places.Autocomplete(input);
+  google.maps.event.addListener(autocomplete, 'place_changed', function() {
+    var place = autocomplete.getPlace();
+    var searchPos = {lat: place.geometry.location.lat(), lng: place.geometry.location.lng(), dist: '3000'};
+    console.log(searchPos)
+    getNewPhotos(searchPos);
+    placeClickMarker(place.geometry.location);
+    map.setCenter(place.geometry.location);
+    map.setZoom(15);
+  });
 }
 
-function placeBlueMarker(success) {
-      var latLng = new google.maps.LatLng(success.coords.latitude, success.coords.longitude);
-      var image = "http://gmaps-samples.googlecode.com/svn/trunk/markers/blue/blank.png";
-      var blueIcon = new google.maps.Marker({
-          position: latLng,
-          map: map,
-          icon: image
-      });
+function placeNavMarker(success) {
+  var latLng = new google.maps.LatLng(success.coords.latitude, success.coords.longitude);
+  var image = "http://gmaps-samples.googlecode.com/svn/trunk/markers/blue/blank.png";
+  var blueIcon = new google.maps.Marker({
+      position: latLng,
+      map: map,
+      icon: image
+  });
+}
+function placeInstaMarkers(data) {
+  for (var i = 0; i < data.length; i++) {
+    var latLng = new google.maps.LatLng(data[i].location.latitude, data[i].location.longitude); 
+    var image = '/instagram-shadow.png';
+    var instaMarker = new google.maps.Marker({
+        // setAnimation: google.maps.Animation.DROP,
+        position: latLng,
+        map: map,
+        icon: image
+    });
+    instaMarker.setAnimation(google.maps.Animation.DROP);
+    addInfoWindow(data, instaMarker, i);
+  };
 }
 
-function placeMarker(location) {
+function addInfoWindow(data, instaMarker, i){
+  var username = data[i].user.username;
+  var caption;
+  if ( !data[i].caption ) {
+    caption = "No Comment.."
+  } else {
+    caption = data[i].caption.text 
+  }
+  var infowindow = new google.maps.InfoWindow({
+    // backgroundColor: 'rgb(57,57,57)',
+    // backgroundClassName: 'phoney',
+    content: 
+    '<img class="popupPhoto" src="'+ data[i].images.low_resolution.url +'"/><br/>'+
+    '<div class="userInfo">'+
+      '<a href="http://instagram.com/'+ username +'" target="_blank">'+
+        '<img class="profilePicture" src="'+ data[i].user.profile_picture +'"/>'+
+        '<span class="popupText">@'+ username +'</span>'+
+      '</a>' +
+      '<p class="caption">'+ caption + '</p>' +
+    '</div>'
+  });
+  infowindow.setOptions({maxWidth:250});
+  infowindow.setOptions({maxHeight:300})
+
+  google.maps.event.addListener(instaMarker, 'click', function() {
+    // deleteInstaMarker()
+    infowindow.open(map, this);
+  });
+}
+
+// function
+
+function placeClickMarker(location) {
   deleteOverlays();
   var marker = new google.maps.Marker({
     position: location,
@@ -102,28 +149,12 @@ function placeMarker(location) {
 }
 
 function deleteOverlays() {
-    if (markersArray) {
-      for (i in markersArray) {
-        markersArray[i].setMap(null);
-      }
-    markersArray.length = 0;
+  if (markersArray) {
+    for (i in markersArray) {
+      markersArray[i].setMap(null);
     }
-}
-
-//INSTAGRAM HELPERS
-
-function placeInstaMarkers(data) {
-  for (var i = 0; i < data.length; i++) {
-    var latLng = new google.maps.LatLng(data[i].location.latitude, data[i].location.longitude); 
-    var image = '/instagram-shadow.png';
-    var instagram = new google.maps.Marker({
-        // setAnimation: google.maps.Animation.DROP,
-        position: latLng,
-        map: map,
-        icon: image
-    });
-    instagram.setAnimation(google.maps.Animation.DROP);
-  };
+  markersArray.length = 0;
+  }
 }
 
 function onJsonLoaded (json) {
