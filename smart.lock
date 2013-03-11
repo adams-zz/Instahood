@@ -6,13 +6,19 @@
   },
   "dependencies": {
     "basePackages": {
-      "moment": {}
+      "moment": {},
+      "accounts-instagram": {}
     },
     "packages": {
       "moment": {
         "git": "https://github.com/possibilities/meteor-moment.git",
         "tag": "v1.7.0",
         "commit": "c64b6ec0e714b9556f4b6643d430b868ba69d3d7"
+      },
+      "accounts-instagram": {
+        "git": "https://github.com/motro/meteor-accounts-instagram.git",
+        "tag": "v0.2.1",
+        "commit": "d3dec3addf7099454f1ff03a19a3dc3969615606"
       }
     }
   }

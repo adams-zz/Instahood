@@ -29,28 +29,34 @@
         {{> instagram}}
         {{> map}}
     </div>
-    <div id="zoomed-image"></div>
 </template>
 
 <template name="instagram">
     <div id="photos-container">
         {{#each photoset}}
-        <div class="photodiv">
+        <div class="photodiv" >
             <img class="photo" src="{{ images.low_resolution.url }}" alt="">
             <a href="http://instagram.com/{{ user.username }}" target="_blank">
                 <span>
                     <img class="profilePicture" src="{{user.profile_picture}}" />
                     @{{ user.username }}
                 </span>
+                <br/>
             </a>
-            <a id="timestamp" href="{{ link }}" target="_blank">
+            <span id="caption">
+                {{#if caption}}
+                    <span>{{ caption.text }}<span>
+                {{/if}}
+            </span>
+            <!-- <a id="timestamp" href="{{ link }}" target="_blank">
                 <span>{{ time }}</span>
-            </a>
+            </a> -->
         </div>
         {{^}}
             <p class="no-photos">No Photos....<p>
         {{/each}}
     </div>
+    <div id="zoomed-image"></div>
 </template>
 
 <template name="map">

@@ -6,7 +6,8 @@
 autopublish
 insecure
 preserve-inputs
-accounts-twitter
 accounts-ui
 bootstrap
 moment
+coffeescript
+accounts-instagram

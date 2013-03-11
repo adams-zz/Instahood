@@ -1,14 +1,13 @@
-var CLIENTID = '115c041ed2674786a9b047417174c1bc';
+var CLIENTID = '4e7f292665474f8fae3820d7f336f164';
 var markersArray = [];
 var instaArray = [];
-var initPos = {lat: '37.7750', lng: '-122.4183', distance:'5000', client_id: CLIENTID}
 
 Meteor.startup(function(){
   Session.set('photoset', '');
   Session.set('zoomed', ''); 
-  getNewPhotos(initPos);
   getTwitter();
   navigator.geolocation.getCurrentPosition(function(success){
+    getNewPhotos({lat: success.coords.latitude, lng: success.coords.longitude, distance:'3000', client_id: CLIENTID});
     createMap(success);
     addClickListener(success);
     placeNavMarker(success);
@@ -34,7 +33,6 @@ Template.main.events({
       $('<img src='+this.images.standard_resolution.url+' alt="">').appendTo('#zoomed-image');
       Session.set('zoomed', this.images.standard_resolution.url);
     } else{
-      // $('#container').removeClass('greyed');
       $('#zoomed-image').children().remove();
       Session.set('zoomed', '');
     }
@@ -46,27 +44,37 @@ Template.main.events({
       $('<img src='+event.target.src+' alt="">').appendTo('#zoomed-image');
       Session.set('zoomed', event.target.src);
     } else{
-      // $('#container').removeClass('greyed');
       $('#zoomed-image').children().remove();
       Session.set('zoomed', '');
     }
+  },
+  'click #zoomed-image': function(event){
+      $('#zoomed-image').children().remove();
+      Session.set('zoomed', '');
+      $('#photos-container').toggleClass('greyed');
+  },
+  'mouseenter .photodiv': function(event){
+    $(event.target.children[0]).addClass('greyed')
+    for (var i =1; i < event.target.children.length; i++){
+      $(event.target.children[i]).show("easing");
+    }
+  },
+  'mouseleave .photodiv': function(event){
+    $(event.target.children[0]).removeClass('greyed')
+    for (var i =1; i < event.target.children.length; i++){
+      $(event.target.children[i]).hide("easing");
+    }
   }
-  // 'mouseenter .photo': function(event){
-  //   $(event.target).addClass('greyed');
-  //   var parent = $(event.target).parent();
-  //   parent.append('<h2><span>'+ this.user.username +'<br />'+this.likes.count+'</span></h2>')
-  // },
-  // 'mouseleave .photo': function(event){
-  //   $(event.target).removeClass('greyed');
-  //   var parent = $(event.target).parent();
-  //   parent.remove('<h2><span>'+ this.user.username +'<br />'+this.likes.count+'</span></h2>');
-  // }
 });
 
 //GOOGLE MAPS HELPERS
 
+function newLatLng(success) {
+   return new google.maps.LatLng(success.coords.latitude, success.coords.longitude);
+}
+
 function createMap(success) {
-  var latLng = new google.maps.LatLng(success.coords.latitude, success.coords.longitude);
+  var latLng = newLatLng(success);
   var mapOptions = {
     // mapTypeControlOptions: { position: google.maps.ControlPosition.RIGHT_BOTTOM},
     streetViewControl: false,
@@ -82,7 +90,7 @@ function createMap(success) {
 }
 
 function addClickListener(success) {
-  var latLng = new google.maps.LatLng(success.coords.latitude, success.coords.longitude);
+  var latLng = newLatLng(success);
   google.maps.event.addListener(map, 'click', function(event){
     var currentPos = {lat: event.latLng.lat(), lng: event.latLng.lng(), dist: '1000'};
 
@@ -97,7 +105,6 @@ function addAutocomplete() {
   google.maps.event.addListener(autocomplete, 'place_changed', function() {
     var place = autocomplete.getPlace();
     var searchPos = {lat: place.geometry.location.lat(), lng: place.geometry.location.lng(), dist: '3000'};
-    console.log(searchPos)
     getNewPhotos(searchPos);
     placeClickMarker(place.geometry.location);
     map.setCenter(place.geometry.location);
@@ -106,7 +113,7 @@ function addAutocomplete() {
 }
 
 function placeNavMarker(success) {
-  var latLng = new google.maps.LatLng(success.coords.latitude, success.coords.longitude);
+  var latLng = newLatLng(success);
   var image = "http://gmaps-samples.googlecode.com/svn/trunk/markers/blue/blank.png";
   var blueIcon = new google.maps.Marker({
       position: latLng,
@@ -114,12 +121,11 @@ function placeNavMarker(success) {
       icon: image
   });
 }
-function placeInstaMarkers(data) {
+function placeInstaMarkers(data, map) {
   for (var i = 0; i < data.length; i++) {
     var latLng = new google.maps.LatLng(data[i].location.latitude, data[i].location.longitude); 
     var image = '/instagram-shadow.png';
     var instaMarker = new google.maps.Marker({
-        // setAnimation: google.maps.Animation.DROP,
         position: latLng,
         map: map,
         icon: image
@@ -190,9 +196,9 @@ function deleteOverlays() {
 function onJsonLoaded (json) {
   if (json.meta.code == 200) {
     var show = json.data;
-    placeInstaMarkers(show);
+    placeInstaMarkers(show, map);
     Session.set('photoset', show);
-    // momentizePhotoset();
+        $(event.target.children[1]).hide();
   } else{
     alert(json.meta.error_message);
   };
@@ -224,14 +230,4 @@ function getTwitter() {
   }(document,"script","twitter-wjs");
 }
 
-function momentizePhotoset(){
-  var photos = Session.get('photoset')
-  for ( i in photos ){
-    // debugger;
-    photos[i].created_time_human = function(){
-      return moment(photos[i].created_time).fromNow();
-    }
-  }
-  console.log(photos[0].created_time_human());
-}
 

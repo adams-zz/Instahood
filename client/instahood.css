@@ -41,8 +41,8 @@ nav span, #login {
 
 .photo {
     opacity: 1.0;
-    -webkit-transition: all 1s linear;
-    transition: all 1s linear;
+    -webkit-transition: all 500ms linear;
+    transition: all 500ms linear;
     width:100%;
 }
 
@@ -57,14 +57,19 @@ nav span, #login {
 }
 
 #zoomed-image {
-    position: fixed;
-    right: 5%;
-    top: 20%;
-    z-index:1;
+  position: fixed;
+  height: 32%;
+  width: 32%;
+  left: 58%;
+  top: 10%;
 }
 
 .greyed {
-    opacity: 0.1;
+    opacity: 0.05;
+}
+
+.hide {
+  opacity: 0.0;
 }
 
 #map_canvas { 
@@ -130,12 +135,12 @@ nav span, #login {
 .photodiv { 
    position: relative; 
    display: inline-block;
-   width: 33%;
+   width: 32%;
    /*height: 33%;*/
 }
 
 .photodiv a { 
-   display: inline;
+   display: none;
    position: absolute; 
    top: 0; 
    left: 0; 
@@ -145,20 +150,34 @@ nav span, #login {
 
 .photodiv a span {
    color: white; 
-   font: bold 24px/45px Helvetica, Sans-Serif; 
+   font: bold 20px/35px Helvetica, Sans-Serif; 
    letter-spacing: -1px;  
    background: rgb(0, 0, 0); /* fallback color */
    background: rgba(0, 0, 0, 0.7);
-   padding: 10px; 
+   padding: 5px; 
 }
 
 #timestamp {
   position: absolute;
-  margin-top: 41px;
+  margin-top: 12%;
   bottom:0;
 }
 
 #timestamp span {
-  font-size: 12px;
+  font-size: 10px;
   letter-spacing: 0px;
+}
+
+#caption {
+  display: none;
+  position: absolute;
+  top: 0; 
+  left: 0; 
+  width: 100%; 
+  z-index:1;
+  margin-top:25%;
+}
+
+#caption span {
+  color: white;
 }
