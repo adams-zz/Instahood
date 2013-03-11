@@ -1,5 +1,6 @@
 var CLIENTID = '115c041ed2674786a9b047417174c1bc';
 var markersArray = [];
+var instaArray = [];
 var initPos = {lat: '37.7750', lng: '-122.4183', distance:'5000', client_id: CLIENTID}
 
 Meteor.startup(function(){
@@ -18,27 +19,48 @@ Meteor.startup(function(){
 Template.instagram.helpers({
   photoset: function(){
     return Session.get('photoset');
-  }
+  },
 });
+
+Template.instagram.time = function () {
+  return moment(this.created_time).fromNow();
+}
 
 Template.main.events({
   'click .photo': function(event){
-    $('#container').addClass('greyed');
+    $('#photos-container').toggleClass('greyed');
     if (Session.equals('zoomed', '')) {
-      $('<button class="btn close">close</button>').appendTo('#zoomed-image');
+      $('<button class="close btn">close</button>').appendTo('#zoomed-image');
       $('<img src='+this.images.standard_resolution.url+' alt="">').appendTo('#zoomed-image');
       Session.set('zoomed', this.images.standard_resolution.url);
     } else{
-      $('#container').removeClass('greyed');
+      // $('#container').removeClass('greyed');
       $('#zoomed-image').children().remove();
       Session.set('zoomed', '');
     }
   },
-  'click .close': function(){
-    $('#container').removeClass('greyed');
-    $('#zoomed-image').children().remove();
-    Session.set('zoomed', '');
+  'click .popupPhoto': function(event){
+    console.log(event.target);
+    $('#photos-container').toggleClass('greyed');
+    if (Session.equals('zoomed', '')) {
+      $('<img src='+event.target.src+' alt="">').appendTo('#zoomed-image');
+      Session.set('zoomed', event.target.src);
+    } else{
+      // $('#container').removeClass('greyed');
+      $('#zoomed-image').children().remove();
+      Session.set('zoomed', '');
+    }
   }
+  // 'mouseenter .photo': function(event){
+  //   $(event.target).addClass('greyed');
+  //   var parent = $(event.target).parent();
+  //   parent.append('<h2><span>'+ this.user.username +'<br />'+this.likes.count+'</span></h2>')
+  // },
+  // 'mouseleave .photo': function(event){
+  //   $(event.target).removeClass('greyed');
+  //   var parent = $(event.target).parent();
+  //   parent.remove('<h2><span>'+ this.user.username +'<br />'+this.likes.count+'</span></h2>');
+  // }
 });
 
 //GOOGLE MAPS HELPERS
@@ -119,7 +141,7 @@ function addInfoWindow(data, instaMarker, i){
     // backgroundColor: 'rgb(57,57,57)',
     // backgroundClassName: 'phoney',
     content: 
-    '<img class="popupPhoto" src="'+ data[i].images.low_resolution.url +'"/><br/>'+
+    '<img class="popupPhoto" src="'+ data[i].images.standard_resolution.url +'"/><br/>'+
     '<div class="userInfo">'+
       '<a href="http://instagram.com/'+ username +'" target="_blank">'+
         '<img class="profilePicture" src="'+ data[i].user.profile_picture +'"/>'+
@@ -132,12 +154,20 @@ function addInfoWindow(data, instaMarker, i){
   infowindow.setOptions({maxHeight:300})
 
   google.maps.event.addListener(instaMarker, 'click', function() {
-    // deleteInstaMarker()
+    // deleteInstaMarkers(this);
     infowindow.open(map, this);
+    instaArray.push(instaMarker);
   });
 }
 
-// function
+// function deleteInstaMarkers() {
+//   if (instaArray) {
+//     for (i in instaArray){
+//       instaArray[i].close(map)
+//     }
+//   }
+//   instaArray.length = 0;
+// }
 
 function placeClickMarker(location) {
   deleteOverlays();
@@ -162,6 +192,7 @@ function onJsonLoaded (json) {
     var show = json.data;
     placeInstaMarkers(show);
     Session.set('photoset', show);
+    // momentizePhotoset();
   } else{
     alert(json.meta.error_message);
   };
@@ -192,3 +223,15 @@ function getTwitter() {
     }
   }(document,"script","twitter-wjs");
 }
+
+function momentizePhotoset(){
+  var photos = Session.get('photoset')
+  for ( i in photos ){
+    // debugger;
+    photos[i].created_time_human = function(){
+      return moment(photos[i].created_time).fromNow();
+    }
+  }
+  console.log(photos[0].created_time_human());
+}
+

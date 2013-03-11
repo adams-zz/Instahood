@@ -35,9 +35,20 @@
 <template name="instagram">
     <div id="photos-container">
         {{#each photoset}}
-        <img class="photo" src="{{ images.low_resolution.url }}" alt="">
+        <div class="photodiv">
+            <img class="photo" src="{{ images.low_resolution.url }}" alt="">
+            <a href="http://instagram.com/{{ user.username }}" target="_blank">
+                <span>
+                    <img class="profilePicture" src="{{user.profile_picture}}" />
+                    @{{ user.username }}
+                </span>
+            </a>
+            <a id="timestamp" href="{{ link }}" target="_blank">
+                <span>{{ time }}</span>
+            </a>
+        </div>
         {{^}}
-        <p class="no-photos">No Photos....<p>
+            <p class="no-photos">No Photos....<p>
         {{/each}}
     </div>
 </template>
