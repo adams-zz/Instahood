@@ -53,7 +53,7 @@ nav span, #login {
 #zoomed {
     opacity: 1.0;
     width: 100%;
-    z-index:9999;
+    /*z-index:999;*/
     margin-left: 50px;
 }
 
@@ -62,6 +62,7 @@ nav span, #login {
   margin-top: -306px; 
   left: 60%;
   top: 50%;
+  z-index:999;
 }
 
 .greyed {
