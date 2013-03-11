@@ -27,19 +27,16 @@ Template.instagram.time = function () {
 
 Template.main.events({
   'click .photo': function(event){
-    $('#photos-container').toggleClass('greyed');
+    $('.photo').addClass('greyed');
     if (Session.equals('zoomed', '')) {
       $('<button class="close btn">close</button>').appendTo('#zoomed-image');
-      $('<img src='+this.images.standard_resolution.url+' alt="">').appendTo('#zoomed-image');
+      $('<img id=".zoomed" src='+this.images.standard_resolution.url+' alt="">').appendTo('#zoomed-image');
       Session.set('zoomed', this.images.standard_resolution.url);
-    } else{
-      $('#zoomed-image').children().remove();
-      Session.set('zoomed', '');
-    }
+    } 
   },
   'click .popupPhoto': function(event){
     console.log(event.target);
-    $('#photos-container').toggleClass('greyed');
+    $('.photo').toggleClass('greyed');
     if (Session.equals('zoomed', '')) {
       $('<img src='+event.target.src+' alt="">').appendTo('#zoomed-image');
       Session.set('zoomed', event.target.src);
@@ -51,7 +48,7 @@ Template.main.events({
   'click #zoomed-image': function(event){
       $('#zoomed-image').children().remove();
       Session.set('zoomed', '');
-      $('#photos-container').toggleClass('greyed');
+      $('.photo').removeClass('greyed');
   },
   'mouseenter .photodiv': function(event){
     $(event.target.children[0]).addClass('greyed')
@@ -60,7 +57,7 @@ Template.main.events({
     }
   },
   'mouseleave .photodiv': function(event){
-    $(event.target.children[0]).removeClass('greyed')
+    $(event.target.children[0]).toggleClass('greyed')
     for (var i =1; i < event.target.children.length; i++){
       $(event.target.children[i]).hide("easing");
     }
@@ -76,11 +73,7 @@ function newLatLng(success) {
 function createMap(success) {
   var latLng = newLatLng(success);
   var mapOptions = {
-    // mapTypeControlOptions: { position: google.maps.ControlPosition.RIGHT_BOTTOM},
     streetViewControl: false,
-    // navigationControlOptions: {
-    //   position: google.maps.ControlPosition.LEFT_BOTTOM
-    // },
     scrollwheel: false,
     zoom: 14,
     center: latLng,
@@ -160,20 +153,20 @@ function addInfoWindow(data, instaMarker, i){
   infowindow.setOptions({maxHeight:300})
 
   google.maps.event.addListener(instaMarker, 'click', function() {
-    // deleteInstaMarkers(this);
+    deleteInstaMarkers(this);
     infowindow.open(map, this);
     instaArray.push(instaMarker);
   });
 }
 
-// function deleteInstaMarkers() {
-//   if (instaArray) {
-//     for (i in instaArray){
-//       instaArray[i].close(map)
-//     }
-//   }
-//   instaArray.length = 0;
-// }
+function deleteInstaMarkers() {
+  if (instaArray) {
+    for (i in instaArray){
+      instaArray[i].setMap(null)
+    }
+  }
+  instaArray.length = 0;
+}
 
 function placeClickMarker(location) {
   deleteOverlays();
