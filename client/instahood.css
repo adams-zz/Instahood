@@ -10,23 +10,17 @@ html, body {
 
 nav {
     height: 40px;
-    font-size: 20px;
-    /*position: fixed;*/
+    font-size: 25px;
     top: 0;
     left: 0;
     width: 100%;
     background-color: rgba(51,51,51,0.7);
     z-index: 1;
-}
-
-nav span, #login {
-    margin-left: 0.75%;
-    margin-top: 0.45%;
-    float: left;
-    font-weight: 900;
-    color: rgba(240,240,240,0.9);
-    cursor: default;
-    text-shadow: rgba(10,10,10,1) -1px 1px 3px;
+    text-shadow: 0 -1px 0 #bbb;
+    color: #eee;
+    font-family: Helvetica Neue, Helvetica, arial;
+    line-height: 25px;
+    padding-left: 25px;
 }
 
 #photos-container {
@@ -95,7 +89,7 @@ nav span, #login {
 .close {
   position:relative;
   top: 30px;
-  right: 55px;
+  right: 85px;
   padding:5px;
 }
 
@@ -133,11 +127,22 @@ nav span, #login {
   padding-top:9px;
 }
 
-.photodiv { 
-   position: relative; 
-   display: inline-block;
-   width: 32%;
-   /*height: 33%;*/
+
+@media all and (min-width: 640px) {
+  .photodiv { 
+     position: relative; 
+     display: inline-block;
+     width: 32%;
+     /*height: 33%;*/
+  }
+}
+
+@media all and (min-device-width : 320px) and (max-device-width : 640px) {
+  .photodiv { 
+     position: relative; 
+     display: inline-block;
+     width: 100%;
+  }
 }
 
 .photodiv a { 
@@ -148,10 +153,9 @@ nav span, #login {
    width: 100%; 
    z-index:1;
 }
-
 .photodiv a span {
    color: white; 
-   font: bold 20px/35px Helvetica, Sans-Serif; 
+   font: bold 18px/30px Helvetica, Sans-Serif; 
    letter-spacing: -1px;  
    background: rgb(0, 0, 0); /* fallback color */
    background: rgba(0, 0, 0, 0.7);
@@ -177,8 +181,14 @@ nav span, #login {
   width: 100%; 
   z-index:1;
   margin-top:25%;
+  padding: 10px;
 }
 
 #caption span {
-  color: white;
+  text-shadow: 0 -1px 0 #bbb;
+  color: #eee;
+  font-family: Helvetica Neue, Helvetica, arial;
+  font-size: 18px;
+  line-height: 25px;
+  font-weight: bold;
 }

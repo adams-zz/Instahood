@@ -16,7 +16,7 @@
         <input id="searchTextField" type="text" size="60">
         {{#constant}}
             <div id="social">
-                <a href="https://twitter.com/share" class="twitter-share-button" data-via="mgadams3" data-size="large" data-hashtags="instahood" data-text="Check out what's going on in any neighborhood or location via instagram with @instahood! www.instahood.meteor.com">Tweet</a>
+                <a href="https://twitter.com/share" class="twitter-share-button" data-via="mgadams3" data-size="large" data-hashtags="instahood" data-text="Check out what's going on in any neighborhood or location via instagram.">Tweet</a>
             </div>
         {{/constant}}
     </nav>
@@ -45,9 +45,6 @@
                     <span>{{ caption.text }}<span>
                 {{/if}}
             </span>
-            <!-- <a id="timestamp" href="{{ link }}" target="_blank">
-                <span>{{ time }}</span>
-            </a> -->
         </div>
         {{^}}
             <p class="no-photos">No Photos....<p>
@@ -59,3 +56,7 @@
 <template name="map">
   <div id="map_canvas"></div>
 </template>
+
+            <!-- <a id="timestamp" href="{{ link }}" target="_blank">
+                <span>{{ time }}</span>
+            </a> -->

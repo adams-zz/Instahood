@@ -29,7 +29,7 @@ Template.main.events({
   'click .photo': function(event){
     $('.photo').addClass('greyed');
     if (Session.equals('zoomed', '')) {
-      $('<button class="close btn">close</button>').appendTo('#zoomed-image');
+      $('<input type="submit" value="close" class="close">close').appendTo('#zoomed-image');
       $('<img id=".zoomed" src='+this.images.standard_resolution.url+' alt="">').appendTo('#zoomed-image');
       Session.set('zoomed', this.images.standard_resolution.url);
     } 
@@ -39,6 +39,7 @@ Template.main.events({
     $('.photo').toggleClass('greyed');
     if (Session.equals('zoomed', '')) {
       $('<img src='+event.target.src+' alt="">').appendTo('#zoomed-image');
+      $('<input type="submit" value="close" class="close">close').appendTo('#zoomed-image');
       Session.set('zoomed', event.target.src);
     } else{
       $('#zoomed-image').children().remove();
