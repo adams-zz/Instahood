@@ -20,6 +20,7 @@ Meteor.startup(function(){
       addClickListener();
       addAutocomplete();
   }
+  
   function errorFunction(success) {
     alert("You've disabled your geolocation... So here are some pretty pictures of the Golden Gate bridge...");
     var latlng = new google.maps.LatLng(37.808631, -122.474470);
