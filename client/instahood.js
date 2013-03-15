@@ -6,14 +6,31 @@ Meteor.startup(function(){
   Session.set('photoset', '');
   Session.set('zoomed', ''); 
   getTwitter();
-  navigator.geolocation.getCurrentPosition(function(success){
-    getNewPhotos({lat: success.coords.latitude, lng: success.coords.longitude, distance:'3000', client_id: CLIENTID});
-    createMap(success);
-    addClickListener(success);
-    placeNavMarker(success);
-  });
-  addAutocomplete();
+  if (navigator.geolocation) {
+    navigator.geolocation.getCurrentPosition(successFunction, errorFunction);
+  } else {
+      alert('It appears that Geolocation, which is required for this web page application, is not enabled in your browser. Please use a browser which supports the Geolocation API.');
+  }
+
+  function successFunction(success) {
+      var navLatLng = newLatLng(success);
+      getNewPhotos({lat: success.coords.latitude, lng: success.coords.longitude, distance:'3000', client_id: CLIENTID});
+      createMap(navLatLng);
+      placeNavMarker(navLatLng);
+      addClickListener();
+      addAutocomplete();
+  }
+  function errorFunction(success) {
+    alert("You've disabled your geolocation... So here are some pretty pictures of the Golden Gate bridge...");
+    var latlng = new google.maps.LatLng(37.808631, -122.474470);
+    getNewPhotos({lat: latlng.lat(), lng: latlng.lng(), distance:'3000', client_id: CLIENTID});
+    createMap(latlng);
+    placeClickMarker(latlng);
+    addClickListener();
+    addAutocomplete();
+  }
 });
+
 
 Template.instagram.helpers({
   photoset: function(){
@@ -71,8 +88,7 @@ function newLatLng(success) {
    return new google.maps.LatLng(success.coords.latitude, success.coords.longitude);
 }
 
-function createMap(success) {
-  var latLng = newLatLng(success);
+function createMap(latLng) {
   var mapOptions = {
     streetViewControl: false,
     scrollwheel: false,
@@ -83,8 +99,7 @@ function createMap(success) {
   map = new google.maps.Map(document.getElementById("map_canvas"), mapOptions);
 }
 
-function addClickListener(success) {
-  var latLng = newLatLng(success);
+function addClickListener() {
   google.maps.event.addListener(map, 'click', function(event){
     var currentPos = {lat: event.latLng.lat(), lng: event.latLng.lng(), dist: '1000'};
 
@@ -106,8 +121,7 @@ function addAutocomplete() {
   });
 }
 
-function placeNavMarker(success) {
-  var latLng = newLatLng(success);
+function placeNavMarker(latLng) {
   var image = "http://gmaps-samples.googlecode.com/svn/trunk/markers/blue/blank.png";
   var blueIcon = new google.maps.Marker({
       position: latLng,
@@ -187,12 +201,14 @@ function deleteOverlays() {
   }
 }
 
+//INSTA HELPERS
+
 function onJsonLoaded (json) {
   if (json.meta.code == 200) {
     var show = json.data;
     placeInstaMarkers(show, map);
     Session.set('photoset', show);
-        $(event.target.children[1]).hide();
+    $(event.target.children[1]).hide();
   } else{
     alert(json.meta.error_message);
   };
