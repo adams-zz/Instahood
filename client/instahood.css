@@ -96,6 +96,7 @@ nav {
 #social {
   float:right;
   margin-top:5px;
+  margin-right:20px;
 }
 
 #login {
@@ -152,6 +153,7 @@ nav {
    left: 0; 
    width: 100%; 
    z-index:1;
+   overflow: hidden;
 }
 .photodiv a span {
    color: white; 
@@ -159,7 +161,6 @@ nav {
    letter-spacing: -1px;  
    background: rgb(0, 0, 0); /* fallback color */
    background: rgba(0, 0, 0, 0.7);
-   padding: 5px; 
 }
 
 #timestamp {
@@ -173,22 +174,79 @@ nav {
   letter-spacing: 0px;
 }
 
-#caption {
+.caption {
   display: none;
   position: absolute;
   top: 0; 
-  left: 0; 
+  left: 2%; 
   width: 100%; 
   z-index:1;
-  margin-top:25%;
+  margin-top:15%;
   padding: 10px;
 }
 
-#caption span {
+.caption a{
+  display:inline;
+  width: 90%;
+}
+
+.caption a span {
+  position: relative;
   text-shadow: 0 -1px 0 #bbb;
   color: #eee;
   font-family: Helvetica Neue, Helvetica, arial;
   font-size: 18px;
-  line-height: 25px;
+  line-height: 20px;
   font-weight: bold;
+  background: none;
+}
+
+.tip {
+  margin-left: 20px;
+  font-size: 14px;
+}
+
+.social-coffee {
+  position: absolute;
+  bottom: 20%;
+  left: 30%;
+  display: none;
+  width: 100%;
+}
+
+.facebook {
+  position:relative;
+  margin-left: 60px;
+}
+
+.social-coffee a {
+  display:inline;
+}
+
+.twitter-button {
+  background: url(http://audiblecoffee.com/img/socialbuttonsBW_new.png)-3px -153px;
+  height: 52px;
+  width: 50px;
+  opacity: .95;
+}
+
+.twitter-button:hover {
+  background: url(http://audiblecoffee.com/img/socialbuttonsBW_new.png)-3px -102px;
+  height: 49px;
+  width: 50px;
+  opacity: .9;
+}
+
+.fb-button {
+  background: url(http://audiblecoffee.com/img/socialbuttonsBW_new.png)-3px -52px;
+  height: 49px;
+  width: 50px;
+  opacity: .95;
+}
+
+.fb-button:hover {
+  background: url(http://audiblecoffee.com/img/socialbuttonsBW_new.png)-3px -2px;
+  height: 49px;
+  width: 50px;
+  opacity: .9;
 }

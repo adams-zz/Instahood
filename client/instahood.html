@@ -14,9 +14,11 @@
     <nav>
         <span>Instahood</span>
         <input id="searchTextField" type="text" size="60">
+
         {{#constant}}
+            <span class="tip">Click on the map or use the search to see insta photos anywhere in the world!</span>
             <div id="social">
-                <a href="https://twitter.com/share" class="twitter-share-button" data-via="mgadams3" data-size="large" data-hashtags="instahood" data-text="Check out what's going on in any neighborhood or location via instagram.">Tweet</a>
+                <a href="https://twitter.com/share" class="twitter-share-button" data-via="instahood" data-size="large" data-hashtags="instahood" data-text="Check out what's going on in any neighborhood or location via instagram.">Tweet</a>
             </div>
         {{/constant}}
     </nav>
@@ -39,10 +41,24 @@
                 </span>
                 <br/>
             </a>
-            <span id="caption">
+            <span class="caption">
                 {{#if caption}}
-                    <span>{{ caption.text }}<span>
+                    <a href="{{link}}" target="_blank"><span>{{ caption.text }}<span></a>
+                {{^}}
+                    <a href="{{link}}" target="_blank"><span>No Comment...<span></a>
                 {{/if}}
+            </span>
+            <span class="social-coffee">
+                <div class="twitter">
+                    <a href="https://twitter.com/home?status={{link}} via @instahood http://instahood.meteor.com" target="_blank">
+                        <div class="twitter-button"></div>
+                    </a>
+                </div>
+                <div class="facebook">
+                    <a href="https://www.facebook.com/sharer/sharer.php?u={{link}}&t=via http://instahood.meteor.com" target="_blank">
+                        <div class="fb-button"></div>
+                    </a>
+                </div>
             </span>
         </div>
         {{^}}

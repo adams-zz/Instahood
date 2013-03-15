@@ -20,9 +20,9 @@ Meteor.startup(function(){
       addClickListener();
       addAutocomplete();
   }
-  
+
   function errorFunction(success) {
-    alert("You've disabled your geolocation... So here are some pretty pictures of the Golden Gate bridge...");
+    // alert("You've disabled your geolocation... So here are some pretty pictures of the Golden Gate bridge... You can always click around on the map or use the search to see more photos");
     var latlng = new google.maps.LatLng(37.808631, -122.474470);
     getNewPhotos({lat: latlng.lat(), lng: latlng.lng(), distance:'3000', client_id: CLIENTID});
     createMap(latlng);
@@ -31,7 +31,6 @@ Meteor.startup(function(){
     addAutocomplete();
   }
 });
-
 
 Template.instagram.helpers({
   photoset: function(){
