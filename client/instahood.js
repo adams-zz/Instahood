@@ -1,4 +1,4 @@
-var CLIENTID = '4e7f292665474f8fae3820d7f336f164';
+var INSTAID = '4e7f292665474f8fae3820d7f336f164';
 var markersArray = [];
 var instaArray = [];
 
@@ -14,7 +14,7 @@ Meteor.startup(function(){
 
   function successFunction(success) {
       var navLatLng = newLatLng(success);
-      getNewPhotos({lat: success.coords.latitude, lng: success.coords.longitude, distance:'3000', client_id: CLIENTID});
+      getNewPhotos({lat: success.coords.latitude, lng: success.coords.longitude, distance:'3000', client_id: INSTAID});
       createMap(navLatLng);
       placeNavMarker(navLatLng);
       addClickListener();
@@ -24,7 +24,7 @@ Meteor.startup(function(){
   function errorFunction(success) {
     // alert("You've disabled your geolocation... So here are some pretty pictures of the Golden Gate bridge... You can always click around on the map or use the search to see more photos");
     var latlng = new google.maps.LatLng(37.808631, -122.474470);
-    getNewPhotos({lat: latlng.lat(), lng: latlng.lng(), distance:'3000', client_id: CLIENTID});
+    getNewPhotos({lat: latlng.lat(), lng: latlng.lng(), distance:'3000', client_id: INSTAID});
     createMap(latlng);
     placeClickMarker(latlng);
     addClickListener();
@@ -35,17 +35,19 @@ Meteor.startup(function(){
   $('#zoomed-image').hide();
 });
 
-Template.instagram.helpers({
-  photoset: function(){
-    return Session.get('photoset');
-  },
-});
-
-Template.instagram.time = function () {
-  return moment(this.created_time).fromNow();
+Template.instagram.photoset = function(){
+  return Session.get('photoset');
 }
 
-Template.main.events({
+// Template.instagram.time = function () {
+//   return moment(this.created_time).fromNow();
+// }
+
+//Create Template for Zoom View
+//Use events to trigger Session state of zoom
+//Create Helper Events to handle logic of zoom photo
+
+Template.content.events({
   'click .photo': function(event){
     $('.photo').addClass('greyed');
     if (Session.equals('zoomed', '')) {
@@ -54,7 +56,6 @@ Template.main.events({
       Session.set('zoomed', this.images.standard_resolution.url);
     } 
     $('#zoomed-image').toggle('');
-
   },
   'click .popupPhoto': function(event){
     console.log(event.target);
@@ -226,7 +227,7 @@ var getNewPhotos = function (place) {
   $.ajax({
     url: 'https://api.instagram.com/v1/media/search?callback=?',
     dataType: 'json',
-    data: {lat: place.lat, lng: place.lng, distance:place.dist, client_id: CLIENTID},
+    data: {lat: place.lat, lng: place.lng, distance:place.dist, client_id: INSTAID},
     success: jsonLoad,
     statusCode: {
       500: function () {
@@ -237,7 +238,7 @@ var getNewPhotos = function (place) {
 };
 
 //GENERAL HELPERS
-function getTwitter() {
+var getTwitter = function() {
   !function(d,s,id){
     var js,fjs=d.getElementsByTagName(s)[0];
     if(!d.getElementById(id)){

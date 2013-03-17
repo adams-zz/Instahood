@@ -245,28 +245,28 @@ border:solid 2px #fff;
 }
 
 .twitter-button {
-  background: url(http://audiblecoffee.com/img/socialbuttonsBW_new.png)-3px -153px;
+  background: url(/socialbuttons.png)-3px -153px;
   height: 52px;
   width: 50px;
   opacity: .95;
 }
 
 .twitter-button:hover {
-  background: url(http://audiblecoffee.com/img/socialbuttonsBW_new.png)-3px -102px;
+  background: url(/socialbuttons.png)-3px -102px;
   height: 49px;
   width: 50px;
   opacity: .9;
 }
 
 .fb-button {
-  background: url(http://audiblecoffee.com/img/socialbuttonsBW_new.png)-3px -52px;
+  background: url(/socialbuttons.png)-3px -52px;
   height: 49px;
   width: 50px;
   opacity: .95;
 }
 
 .fb-button:hover {
-  background: url(http://audiblecoffee.com/img/socialbuttonsBW_new.png)-3px -2px;
+  background: url(/socialbuttons.png)-3px -2px;
   height: 49px;
   width: 50px;
   opacity: .9;
