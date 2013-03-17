@@ -60,15 +60,18 @@ Template.main.events({
     console.log(event.target);
     $('.photo').toggleClass('greyed');
     if (Session.equals('zoomed', '')) {
+    $('#zoomed-image').toggle('');
       $('<img src='+event.target.src+' alt="">').appendTo('#zoomed-image');
       $('<input type="submit" value="close" class="close">close').appendTo('#zoomed-image');
       Session.set('zoomed', event.target.src);
     } else{
+      $('#zoomed-image').hide();
       $('#zoomed-image').children().remove();
       Session.set('zoomed', '');
     }
   },
   'click #zoomed-image': function(event){
+      $('#zoomed-image').hide();
       $('#zoomed-image').children().remove();
       Session.set('zoomed', '');
       $('.photo').removeClass('greyed');

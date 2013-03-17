@@ -52,11 +52,25 @@ nav {
 }
 
 #zoomed-image {
-  position: fixed;
-  margin-top: -306px; 
-  left: 60%;
-  top: 50%;
-  z-index:999;
+  display: none;
+position: fixed;
+width: 100%;
+text-align: center;
+left: 0px;
+right: 0px;
+top: 0px;
+bottom: 0px;
+z-index: 9000;
+background: rgba(0,0,0,.8);
+}
+#zoomed-image img{
+  display: block;
+text-align: center;
+margin: 20px auto;
+position: relative;
+max-width: 90%;
+max-height: 80%;
+border:solid 2px #fff;
 }
 
 .greyed {
@@ -87,16 +101,21 @@ nav {
 }
 
 .close {
-  position:relative;
-  top: 30px;
-  right: 85px;
+  position:fixed;
+  top: 20px;
+  opacity: .8;
+  z-index: 9999;
+  right: 20px;
   padding:5px;
+}
+.close:hover{
+  opacity:1;
 }
 
 #social {
   float:right;
   margin-top:5px;
-  margin-right:140px;
+  margin-right:12%;
 }
 
 #login {
@@ -127,11 +146,13 @@ nav {
 .userInfo {
   padding-top:9px;
 }
+.photodiv{
+     position: relative; 
+}
 
 
 @media all and (min-width: 640px) {
   .photodiv { 
-     position: relative; 
      display: inline-block;
      width: 32%;
      /*height: 33%;*/
@@ -209,7 +230,7 @@ nav {
 .social-coffee {
   position: absolute;
   bottom: 20%;
-  left: 10px;
+  left: 30%;
   display: none;
   width: 100%;
 }
