@@ -30,6 +30,9 @@ Meteor.startup(function(){
     addClickListener();
     addAutocomplete();
   }
+
+  $('body').append('<a href="http://hackreactor.com"><img style="position: absolute; top: 0; right: 0; border: 0;" src="http://i.imgur.com/x86kKmF.png alt="Built at Hack Reactor"></a>');
+  $('#zoomed-image').hide();
 });
 
 Template.instagram.helpers({
@@ -50,6 +53,8 @@ Template.main.events({
       $('<img id=".zoomed" src='+this.images.standard_resolution.url+' alt="">').appendTo('#zoomed-image');
       Session.set('zoomed', this.images.standard_resolution.url);
     } 
+    $('#zoomed-image').toggle('');
+
   },
   'click .popupPhoto': function(event){
     console.log(event.target);
@@ -203,7 +208,7 @@ function deleteOverlays() {
 
 //INSTA HELPERS
 
-function onJsonLoaded (json) {
+function jsonLoad (json) {
   if (json.meta.code == 200) {
     var show = json.data;
     placeInstaMarkers(show, map);
@@ -219,7 +224,7 @@ var getNewPhotos = function (place) {
     url: 'https://api.instagram.com/v1/media/search?callback=?',
     dataType: 'json',
     data: {lat: place.lat, lng: place.lng, distance:place.dist, client_id: CLIENTID},
-    success: onJsonLoaded,
+    success: jsonLoad,
     statusCode: {
       500: function () {
         alert('Sorry, service is temporarily down.');
@@ -240,4 +245,5 @@ function getTwitter() {
   }(document,"script","twitter-wjs");
 }
 
+$('div#social').hide() // or just move it over
 

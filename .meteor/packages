@@ -7,5 +7,4 @@ autopublish
 insecure
 preserve-inputs
 bootstrap
-moment
 coffeescript

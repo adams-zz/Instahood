@@ -3,6 +3,19 @@
     <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js"></script> 
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDSoM9HgrTGLXgnm9mjzDY0194TPVx0mtw&sensor=true&libraries=places"></script>
     <meta name="viewport", content="width=device-width, initial-scale=0.5, user-scalable=no">
+    <script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-39351430-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+</script>
 </head>
 
 <body>
@@ -16,7 +29,7 @@
         <input id="searchTextField" type="text" size="60">
 
         {{#constant}}
-            <span class="tip">Click on the map or use the search to see insta photos anywhere in the world!</span>
+            <span class="tip">Click on the map or use the search</span>
             <div id="social">
                 <a href="https://twitter.com/share" class="twitter-share-button" data-via="instahood" data-size="large" data-hashtags="instahood" data-text="Check out what's going on in any neighborhood or location via instagram.">Tweet</a>
             </div>

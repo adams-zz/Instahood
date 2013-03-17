@@ -96,7 +96,7 @@ nav {
 #social {
   float:right;
   margin-top:5px;
-  margin-right:20px;
+  margin-right:140px;
 }
 
 #login {
@@ -209,7 +209,7 @@ nav {
 .social-coffee {
   position: absolute;
   bottom: 20%;
-  left: 30%;
+  left: 10px;
   display: none;
   width: 100%;
 }
