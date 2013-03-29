@@ -271,3 +271,148 @@ border:solid 2px #fff;
   width: 50px;
   opacity: .9;
 }
+
+/* BUBBLE LOADER*/
+
+.loading {
+  font-family: Helvetica;
+  font-size: 42px;
+  padding: 30px;
+  color: white;
+  position: absolute;
+  top: 60px;
+}
+
+.bubblingG {
+text-align: center;
+width:260px;
+height:200px;
+}
+
+.bubblingG span {
+display: inline-block;
+vertical-align: middle;
+width: 20px;
+height: 20px;
+margin: 50px auto;
+background: #000000;
+-moz-border-radius: 100px;
+-moz-animation: bubblingG 0.8s infinite alternate;
+-webkit-border-radius: 100px;
+-webkit-animation: bubblingG 0.8s infinite alternate;
+-ms-border-radius: 100px;
+-ms-animation: bubblingG 0.8s infinite alternate;
+-o-border-radius: 100px;
+-o-animation: bubblingG 0.8s infinite alternate;
+border-radius: 100px;
+animation: bubblingG 0.8s infinite alternate;
+}
+
+#bubblingG_1 {
+-moz-animation-delay: 0s;
+-webkit-animation-delay: 0s;
+-ms-animation-delay: 0s;
+-o-animation-delay: 0s;
+animation-delay: 0s;
+}
+
+#bubblingG_2 {
+-moz-animation-delay: 0.24s;
+-webkit-animation-delay: 0.24s;
+-ms-animation-delay: 0.24s;
+-o-animation-delay: 0.24s;
+animation-delay: 0.24s;
+}
+
+#bubblingG_3 {
+-moz-animation-delay: 0.48s;
+-webkit-animation-delay: 0.48s;
+-ms-animation-delay: 0.48s;
+-o-animation-delay: 0.48s;
+animation-delay: 0.48s;
+}
+
+@-moz-keyframes bubblingG {
+0% {
+width: 20px;
+height: 20px;
+background-color:#000000;
+-moz-transform: translateY(0);
+}
+
+100% {
+width: 48px;
+height: 48px;
+background-color:#FFFFFF;
+-moz-transform: translateY(-42px);
+}
+
+}
+
+@-webkit-keyframes bubblingG {
+0% {
+width: 20px;
+height: 20px;
+background-color:#000000;
+-webkit-transform: translateY(0);
+}
+
+100% {
+width: 48px;
+height: 48px;
+background-color:#FFFFFF;
+-webkit-transform: translateY(-42px);
+}
+
+}
+
+@-ms-keyframes bubblingG {
+0% {
+width: 20px;
+height: 20px;
+background-color:#000000;
+-ms-transform: translateY(0);
+}
+
+100% {
+width: 48px;
+height: 48px;
+background-color:#FFFFFF;
+-ms-transform: translateY(-42px);
+}
+
+}
+
+@-o-keyframes bubblingG {
+0% {
+width: 20px;
+height: 20px;
+background-color:#000000;
+-o-transform: translateY(0);
+}
+
+100% {
+width: 48px;
+height: 48px;
+background-color:#FFFFFF;
+-o-transform: translateY(-42px);
+}
+
+}
+
+@keyframes bubblingG {
+0% {
+width: 20px;
+height: 20px;
+background-color:#000000;
+transform: translateY(0);
+}
+
+100% {
+width: 48px;
+height: 48px;
+background-color:#FFFFFF;
+transform: translateY(-42px);
+}
+
+}

@@ -54,7 +54,7 @@ Template.content.events({
       $('<input type="submit" value="close" class="close">close').appendTo('#zoomed-image');
       $('<img id=".zoomed" src='+this.images.standard_resolution.url+' alt="">').appendTo('#zoomed-image');
       Session.set('zoomed', this.images.standard_resolution.url);
-    } 
+    }
     $('#zoomed-image').toggle('');
   },
   'click .popupPhoto': function(event){
@@ -217,6 +217,7 @@ function jsonLoad (json) {
     var show = json.data;
     placeInstaMarkers(show, map);
     Session.set('photoset', show);
+    console.log(show);
     $(event.target.children[1]).hide();
   } else{
     alert(json.meta.error_message);
@@ -227,7 +228,7 @@ var getNewPhotos = function (place) {
   $.ajax({
     url: 'https://api.instagram.com/v1/media/search?callback=?',
     dataType: 'json',
-    data: {lat: place.lat, lng: place.lng, distance:place.dist, client_id: INSTAID},
+    data: {'order': '-createdAt', lat: place.lat, lng: place.lng, distance:place.dist, client_id: INSTAID},
     success: jsonLoad,
     statusCode: {
       500: function () {
@@ -249,5 +250,4 @@ var getTwitter = function() {
   }(document,"script","twitter-wjs");
 }
 
-$('div#social').hide() // or just move it over
-
+$('div#social').hide()
