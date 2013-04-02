@@ -16,7 +16,7 @@ Instahood was originally built as a [Meteor](http://meteor.com/) application use
 [Google Maps Javascript API v3](https://developers.google.com/maps/documentation/javascript/) and the 
 [Instagram API](http://http://instagram.com/developer/).  
 
-Instahood was make the front page of Hacker News on March 16, 2013, made it all the way up to the second 
+Instahood made the front page of Hacker News on March 16, 2013, made it all the way up to the second 
 highest spot and in one week had over 10,000 unique visitors!
 
 ## About Me
