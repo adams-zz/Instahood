@@ -23,3 +23,14 @@ highest spot and in one week had over 10,000 unique visitors!
 
 Instahood was built by [Mike Adams](http://mikeincode.com) about half way through the 13 week Javascript
 bootcamp at [Hack Reactor](http://hackreactor.com).
+
+## To-Do
+
+* Instagram OAuth
+* query specific URL's
+* Handle Real-time POST callbacks
+* CSS Media Queries for ipad
+* Timestamping
+* Easy List of most popular queries
+* Search by Hashtag
+* Prevent duplicating Insta markers
