@@ -1,6 +1,8 @@
 {
   "packages": {
     "moment": {},
-    "accounts-instagram": {}
+    "accounts-instagram": {},
+    "router": {},
+    "mini-pages": {}
   }
 }
