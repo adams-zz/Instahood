@@ -3,10 +3,6 @@ var markersArray = [];
 var instaArray = [];
 
 Meteor.startup(function(){
-  Session.set('photoset', '');
-  Session.set('zoomed', ''); 
-  getTwitter();
-
   //Get the users geolocation
   if (navigator.geolocation) {
     navigator.geolocation.getCurrentPosition(successFunction, errorFunction);
@@ -34,9 +30,13 @@ Meteor.startup(function(){
     addAutocomplete();
   }
 
+  //initialize state of zoomed image
+  $('#zoomed-image').hide();
+  Session.set('zoomed', '');
+
   //Hack Reactor Banner
   $('body').append('<a href="http://hackreactor.com"><img style="position: absolute; top: 0; right: 0; border: 0;" src="http://i.imgur.com/x86kKmF.png alt="Built at Hack Reactor"></a>');
-  $('#zoomed-image').hide();
+  getTwitter();
 });
 
 
@@ -48,42 +48,41 @@ Template.instagram.photoset = function(){
 //Event Handlers for click and mouseover events
 Template.content.events({
   'click .photo': function(event){
-    $('.photo').addClass('greyed');
+    $(event.target).addClass('greyed');
     if (Session.equals('zoomed', '')) {
-      $('<input type="submit" value="close" class="close">close').appendTo('#zoomed-image');
-      $('<img id=".zoomed" src='+this.images.standard_resolution.url+' alt="">').appendTo('#zoomed-image');
-      Session.set('zoomed', this.images.standard_resolution.url);
+      $('<input type="submit" value="close" class="close">').appendTo('#zoomed-image');
+      $('<img src='+this.images.standard_resolution.url+' alt="">').appendTo('#zoomed-image');
+      Session.set('zoomed', 'zoomed');
     }
     $('#zoomed-image').toggle('');
   },
   'click .popupPhoto': function(event){
-    console.log(event.target);
     $('.photo').toggleClass('greyed');
     if (Session.equals('zoomed', '')) {
-    $('#zoomed-image').toggle('');
+      $('#zoomed-image').toggle('');
       $('<img src='+event.target.src+' alt="">').appendTo('#zoomed-image');
-      $('<input type="submit" value="close" class="close">close').appendTo('#zoomed-image');
-      Session.set('zoomed', event.target.src);
-    } else{
+      $('<input type="submit" value="close" class="close">').appendTo('#zoomed-image');
+      Session.set('zoomed', 'zoomed');
+    } else {
       $('#zoomed-image').hide();
       $('#zoomed-image').children().remove();
       Session.set('zoomed', '');
     }
   },
   'click #zoomed-image': function(event){
-      $('#zoomed-image').hide();
-      $('#zoomed-image').children().remove();
+      $(event.currentTarget).hide();
+      $(event.currentTarget).children().remove();
       Session.set('zoomed', '');
       $('.photo').removeClass('greyed');
   },
   'mouseenter .photodiv': function(event){
-    $(event.target.children[0]).addClass('greyed')
+    $(event.target.children[0]).addClass('greyed');
     for (var i =1; i < event.target.children.length; i++){
       $(event.target.children[i]).show("easing");
     }
   },
   'mouseleave .photodiv': function(event){
-    $(event.target.children[0]).toggleClass('greyed')
+    $(event.target.children[0]).toggleClass('greyed');
     for (var i =1; i < event.target.children.length; i++){
       $(event.target.children[i]).hide("easing");
     }
@@ -234,7 +233,6 @@ function jsonLoad (json) {
     var show = json.data;
     placeInstaMarkers(show, map);
     Session.set('photoset', show);
-    console.log(show);
     $(event.target.children[1]).hide();
   } else{
     alert(json.meta.error_message);
