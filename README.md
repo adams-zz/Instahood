@@ -12,25 +12,26 @@ out the photo's caption.
 Nothing going on around you?  No problem!  Click anywhere on the map or use the search in the navigation
 bar to see what's going on anywhere in the world!
 
-Instahood was originally built as a [Meteor](http://meteor.com/) application uses the 
+Instahood was built in about 3 days at [HackReactor](http://hackreactor.com) as a [Meteor](http://meteor.com/) application that uses the 
 [Google Maps Javascript API v3](https://developers.google.com/maps/documentation/javascript/) and the 
 [Instagram API](http://http://instagram.com/developer/).  
 
 Instahood made the front page of Hacker News on March 16, 2013, made it all the way up to the second 
-highest spot and in one week had over 10,000 unique visitors!
+highest spot and in one week had over 10,000 unique visitors! [HackerNews](https://news.ycombinator.com/item?id=5387847)
+
+Instahood was also featured in Mashable's ["19 Facinating Maps Apps"](http://mashable.com/2013/04/24/cool-city-maps/)
 
 ## About Me
 
-Instahood was built by [Mike Adams](http://mikeincode.com) about half way through the 13 week Javascript
+Instahood was built by [Mike Adams](http://adams.jit.su) about half way through the 12 week Javascript
 bootcamp at [Hack Reactor](http://hackreactor.com).
 
 ## To-Do
 
 * Instagram OAuth
-* query specific URL's
-* Handle Real-time POST callbacks
+* Geo-specific URL's to be shared
+* Polling API for live updates
 * CSS Media Queries for ipad
 * Timestamping
 * Easy List of most popular queries
 * Search by Hashtag
-* Prevent duplicating Insta markers
