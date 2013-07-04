@@ -1,8 +1,10 @@
 var INSTAID = 'c28bc8730c734259aba3fd5c1946f073';
 var markersArray = [];
 var instaArray = [];
+var ACCESSTOKEN = "";
 
 Meteor.startup(function(){
+
   //Get the users geolocation
   if (navigator.geolocation) {
     navigator.geolocation.getCurrentPosition(successFunction, errorFunction);
@@ -13,17 +15,17 @@ Meteor.startup(function(){
   //If the user has a geolocation, get photos near location and set map center to location.
   function successFunction(success) {
     var navLatLng = newLatLng(success);
-    getNewPhotos({lat: success.coords.latitude, lng: success.coords.longitude, distance:'3000', client_id: INSTAID});
+    getNewPhotos({lat: success.coords.latitude, lng: success.coords.longitude, distance:'3000'});
     createMap(navLatLng);
     placeNavMarker(navLatLng);
     addClickListener();
     addAutocomplete();
   }
 
-  //If the user did not enable geolocation, get photos and set map near Golden Gate Bridge.
+  //If the user did not enable geolocation, get photos and set map near Golden Gate Bridge, because it's always awesome.
   function errorFunction(success) {
     var latlng = new google.maps.LatLng(37.808631, -122.474470);
-    getNewPhotos({lat: latlng.lat(), lng: latlng.lng(), distance:'3000', client_id: INSTAID});
+    getNewPhotos({lat: latlng.lat(), lng: latlng.lng(), distance:'3000'});
     createMap(latlng);
     placeClickMarker(latlng);
     addClickListener();
@@ -35,9 +37,17 @@ Meteor.startup(function(){
   Session.set('zoomed', '');
 
   //Hack Reactor Banner
-  $('body').append('<a href="http://hackreactor.com"><img style="position: absolute; top: 0; right: 0; border: 0;" src="http://i.imgur.com/x86kKmF.png alt="Built at Hack Reactor"></a>');
   getTwitter();
+
 });
+
+Deps.autorun(function(){
+  if(Meteor.user()){
+    Meteor.call("getAccessToken", function(error, accessToken){
+       ACCESSTOKEN = accessToken;
+    })
+  }
+})
 
 
 //Helper function to push photos to template scope
@@ -113,7 +123,6 @@ function createMap(latLng) {
 function addClickListener() {
   google.maps.event.addListener(map, 'click', function(event){
     var currentPos = {lat: event.latLng.lat(), lng: event.latLng.lng(), dist: '1000'};
-
     placeClickMarker(event.latLng);
     getNewPhotos(currentPos);
   });
@@ -127,8 +136,7 @@ function addAutocomplete() {
   autocomplete = new google.maps.places.Autocomplete(input);
   google.maps.event.addListener(autocomplete, 'place_changed', function() {
     var place = autocomplete.getPlace();
-    var searchPos = {lat: place.geometry.location.lat(), lng: place.geometry.location.lng(), dist: '3000'};
-    getNewPhotos(searchPos);
+    getNewPhotos({lat: place.geometry.location.lat(), lng: place.geometry.location.lng(), dist: '3000'});
     placeClickMarker(place.geometry.location);
     map.setCenter(place.geometry.location);
     map.setZoom(15);
@@ -235,16 +243,16 @@ function jsonLoad (json) {
     Session.set('photoset', show);
     $(event.target.children[1]).hide();
   } else{
-    alert(json.meta.error_message);
+    alert("Instagram API limit exceeded, please login to Instahood with Instagram to see more photos");
   };
 }
 
 //basic ajax call to instagram API, searching for photos within specified distance of passed in place
-var getNewPhotos = function (place) {
+var getNewPhotos = function (data) {
   $.ajax({
     url: 'https://api.instagram.com/v1/media/search?callback=?',
     dataType: 'json',
-    data: {'order': '-createdAt', lat: place.lat, lng: place.lng, distance:place.dist, client_id: INSTAID},
+    data: {'order': '-createdAt', lat: data.lat, lng: data.lng, distance:data.dist, client_id: INSTAID, access_token: ACCESSTOKEN},
     success: jsonLoad,
     statusCode: {
       500: function () {
